@@ -260,11 +260,11 @@ var game = (function() {
      * UpdateScore.php.
      */
     function recordPlayerScore() {
+        //TODO: capture and store the score
         var playerName = prompt("GAME OVER\nFinal Score: " + score + "\nPlease enter your name:\n");
-        if (playerName && ("" !== playerName)) {
-            //TODO: Authenticate this call
-            window.location="UpdateScores.php?needToAdd=1&score="+score+"&name="+playerName;
-        }
+//        if (playerName && ("" !== playerName)) {
+//            window.location="UpdateScores.php?needToAdd=1&score="+score+"&name="+playerName;
+//        }
     }
 
     /**
