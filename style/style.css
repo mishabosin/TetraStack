@@ -1,0 +1,73 @@
+/** Stylesheet to support TetraStack */
+A:visited { color: blue; }
+#container {
+    width: 493px;
+    margin: 0 auto;
+    display: block;
+    overflow: auto;
+}
+.title {
+    clear: both;
+    margin: 10px;
+    font-weight: 900;
+    font-size: 20px;
+    color: blue;
+    text-align: center;
+}
+.text {
+    font-weight: 900;
+    color: blue;
+    text-align: center;
+}
+#progress {
+    float: left;
+    margin-right: 20px;
+    width: 100px;
+    height: 150px;
+    border: 4px double black;
+}
+#preview {
+    float: right;
+    margin-left: 20px;
+    width: 100px;
+    height: 150px;
+    border: 4px double black;
+}
+#game {
+    text-align: center;
+    float: left;
+}
+#controls {
+    font-family: arial, sans-serif;
+    font-size: 14px;
+    text-align: center;
+    clear: both;
+}
+.copyright {
+    clear: both;
+    text-align: center;
+    font-size: 10px;
+    font-weight: 700;
+}
+table.game {
+    text-align: center;
+    border-collapse: collapse;
+    border: 4px double black;
+}
+table.preview {
+    text-align: center;
+    border-collapse: collapse;
+}
+td {
+    text-align: center;
+    height: 20px;
+    width: 20px;
+}
+td.SKY { background: #E6E6E6; }
+td.SQUARE, td._SQUARE { background: #0000FF; }
+td.LINE, td._LINE { background: #DF0101; }
+td.PYRAMID, td._PYRAMID { background: #585858; }
+td.L1, td._L1 { background: #DF0174; }
+td.L2, td._L2 { background: #FF8000; }
+td.S1, td._S1 { background: #01DF01; }
+td.S2, td._S2{ background: #01DFD7; }
