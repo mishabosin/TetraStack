@@ -32,27 +32,34 @@ var game = (function() {
         logger.log('Game initialized');
 
         document.getElementById("game").innerHTML = "Initializing...";
-            // Check for an iPhone and set up gimpy iPhone button controls
-            document.getElementById("newGameButton").value = "Start";
+        document.getElementById("newGameButton").value = "Start";
 
         // Draw the game
         drawGame();
         drawPreview();
-
-        // Check for the iPad/iPhone and add these gimpy controls
-        // TODO: validate this using the simulator
-        // TODO: use show/hide here instead of injecting a bunch of HTML?
-        if (navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPod/i)) {
-            document.getElementById("controls").innerHTML = "<br><form action=''><table width='100%'><tr>\
-            <td><input id='left' type='button' style='width: 70px;' value='Left' onClick='game.userLeft();'></td>\
-            <td><input id='up' type='button' style='width: 70px;' value='Rotate' onClick='game.userUp();'></td>\
-            <td><input id='down' type='button' style='width: 70px;' value='Drop' onClick='game.userDown();'></td>\
-            <td><input id='right' type='button' style='width: 70px;' value='Right' onClick='game.userRight();'></td>\
-            </tr></table></form>";
-        }
+        addTouchScreenSupport();
 
         // Add the key listner:
         document.onkeydown = processKeys;
+
+        /**
+         * Check for the iPad/iPhone and add some buttons to push or listen for getures
+         */
+        function addTouchScreenSupport() {
+            // TODO.
+            // 1) validate this using the simulator
+            // 2) use show/hide here instead of injecting a bunch of HTML?
+            // 3) don't use a table - design a button layout.
+            // 4) Detect swipe motions?
+            if (navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPod/i)) {
+                document.getElementById("controls").innerHTML = "<br><form action=''><table width='100%'><tr>\
+                        <td><input id='left' type='button' onClick='game.userLeft();'></td>\
+                        <td><input id='up' type='button' onClick='game.userUp();'></td>\
+                        <td><input id='down' type='button' onClick='game.userDown();'></td>\
+                        <td><input id='right' type='button' onClick='game.userRight();'></td>\
+                        </tr></table></form>";
+            }
+        }
     }
 
     /**
@@ -139,7 +146,7 @@ var game = (function() {
      */
     function drawGame() {
         var x, y;
-        var gameTable = '<table class="game" border="1">';
+        var gameTable = '<table class="gameBoard">';
 
         // The higher rows get added to the table first
         for (y = board.BOARD_HEIGHT - 1; y > -1; y--) {
@@ -388,7 +395,7 @@ var game = (function() {
      * Define a blank preview board
      */
     function drawPreview() {
-        var previewBoard = new Board(4, 4);
+        var previewBoard = new Board(4, 5);
         var previewTable;
         var x, y, i, totalShapeBlocks;
         // Position on the preview board: this shape will always be above the
@@ -403,7 +410,7 @@ var game = (function() {
         }
 
         // Construct the html for the display table
-        previewTable = '<br>Preview<br><table class="preview">';
+        previewTable = '<br>Preview<br><table class="previewBoard">';
         // The higher rows get added to the table first
         for (y = previewBoard.BOARD_HEIGHT - 1; y > -1; --y) {
             // Generate each row
@@ -427,7 +434,7 @@ var game = (function() {
      */
     function drawPausedGame() {
         var x, y;
-        var gameTable = '<table class="game" border="1">';
+        var gameTable = '<table class="gameBoard">';
         var boardMiddle = board.BOARD_HEIGHT / 2;
         // The higher rows get added to the table first
         for (y = board.BOARD_HEIGHT - 1; y > -1; --y) {

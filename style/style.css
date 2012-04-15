@@ -1,73 +1,140 @@
 /** Stylesheet to support TetraStack */
+
+/*TODO: reset*/
+
 A:visited { color: blue; }
 #container {
-    width: 493px;
+    width: 593px;
     margin: 0 auto;
     display: block;
-    overflow: auto;
 }
 .title {
-    clear: both;
     margin: 10px;
     font-weight: 900;
     font-size: 20px;
     color: blue;
     text-align: center;
 }
-.text {
+.gameText {
     font-weight: 900;
     color: blue;
     text-align: center;
 }
-#progress {
-    float: left;
-    margin-right: 20px;
-    width: 100px;
+#progress,
+#preview {
+    width: 150px;
     height: 150px;
     border: 4px double black;
+}
+#progress {
+    margin-right: 20px;
+    float: left;
 }
 #preview {
-    float: right;
     margin-left: 20px;
-    width: 100px;
-    height: 150px;
-    border: 4px double black;
+    float: right;
 }
 #game {
-    text-align: center;
     float: left;
 }
 #controls {
+    clear: both;
+    padding-top: 25px;
+}
+#controls .info {
+    text-align: center;
+    padding-bottom: 5px;
     font-family: arial, sans-serif;
     font-size: 14px;
-    text-align: center;
-    clear: both;
+}
+#left, #right, #up, #down {
+    width: 70px;
 }
 .copyright {
     clear: both;
+    padding-top: 10px;
     text-align: center;
     font-size: 10px;
     font-weight: 700;
 }
-table.game {
+table.gameBoard {
     text-align: center;
     border-collapse: collapse;
     border: 4px double black;
 }
-table.preview {
+table.gameBoard td {
+    border: 1px solid black;
+}
+table.previewBoard {
+    margin: 0 auto;
     text-align: center;
     border-collapse: collapse;
 }
-td {
-    text-align: center;
+table.gameBoard td,
+table.previewBoard td {
     height: 20px;
     width: 20px;
 }
-td.SKY { background: #E6E6E6; }
-td.SQUARE, td._SQUARE { background: #0000FF; }
-td.LINE, td._LINE { background: #DF0101; }
-td.PYRAMID, td._PYRAMID { background: #585858; }
-td.L1, td._L1 { background: #DF0174; }
-td.L2, td._L2 { background: #FF8000; }
-td.S1, td._S1 { background: #01DF01; }
-td.S2, td._S2{ background: #01DFD7; }
+td.SKY {
+    background: #E6E6E6;
+}
+/* The top gradient on these is .5 opacity of the main color, and the bottom is .7 */
+td.SQUARE, td._SQUARE {
+    background: #0000FF;
+    background: -moz-linear-gradient(top, #6962FF 0%, #0000FF 50%, #3525FF 100%);  /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#6962FF), color-stop(50%,#0000FF), color-stop(100%,#3525FF));  /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #6962FF 0%,#0000FF 50%,#3525FF 100%); /* Chrome10+,Safari5.1+ */
+    background: -ms-linear-gradient(top, #6962FF 0%,#0000FF 50%,#3525FF 100%);  /* IE10+ */
+}
+td.LINE, td._LINE {
+    background: #DF0101;
+    background: -moz-linear-gradient(top, #E16B6C 0%, #DF0101 50%, #D6393A 100%);  /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#E16B6C), color-stop(50%,#DF0101), color-stop(100%,#D6393A));  /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #E16B6C 0%,#DF0101 50%,#D6393A 100%); /* Chrome10+,Safari5.1+ */
+    background: -ms-linear-gradient(top, #E16B6C 0%,#DF0101 50%,#D6393A 100%);  /* IE10+ */
+}
+td.PYRAMID, td._PYRAMID {
+    background: #585858;
+    background: -moz-linear-gradient(top, #9C9C9C 0%, #585858 50%, #373737 100%);  /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#9C9C9C), color-stop(50%,#585858), color-stop(100%,#373737));  /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #9C9C9C 0%,#585858 50%,#373737 100%); /* Chrome10+,Safari5.1+ */
+    background: -ms-linear-gradient(top, #9C9C9C 0%,#585858 50%,#373737 100%);  /* IE10+ */
+}
+td.L1, td._L1 {
+    background: #DF0174;
+    background: -moz-linear-gradient(top, #E068B0 0%, #DF0174 50%, #D53392 100%);  /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#E068B0), color-stop(50%,#DF0174), color-stop(100%,#D53392));  /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #E068B0 0%,#DF0174 50%,#D53392 100%); /* Chrome10+,Safari5.1+ */
+    background: -ms-linear-gradient(top, #E068B0 0%,#DF0174 50%,#D53392 100%);  /* IE10+ */
+}
+td.L2, td._L2 {
+    background: #FF8000;
+    background: -moz-linear-gradient(top, #F9B563 0%, #FF8000 50%, #F6972A 100%);  /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#F9B563), color-stop(50%,#FF8000), color-stop(100%,#F6972A));  /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #F9B563 0%,#FF8000 50%,#F6972A 100%); /* Chrome10+,Safari5.1+ */
+    background: -ms-linear-gradient(top, #F9B563 0%,#FF8000 50%,#F6972A 100%);  /* IE10+ */
+}
+td.S1, td._S1 {
+    background: #01CF01;
+    background: -moz-linear-gradient(top, #7FE65C 0%, #01CF01 50%, #5ADB16 100%);  /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#7FE65C), color-stop(50%,#01CF01), color-stop(100%,#5ADB16));  /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #7FE65C 0%,#01CF01 50%,#5ADB16 100%); /* Chrome10+,Safari5.1+ */
+    background: -ms-linear-gradient(top, #7FE65C 0%,#01CF01 50%,#5ADB16 100%);  /* IE10+ */
+}
+td.S2, td._S2 {
+    background: #01DFD7;
+    background: -moz-linear-gradient(top, #7FECE6 0%, #01DFD7 50%, #59E4DC 100%);  /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#7FECE6), color-stop(50%,#01DFD7), color-stop(100%,#59E4DC));  /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #7FECE6 0%,#01DFD7 50%,#59E4DC 100%); /* Chrome10+,Safari5.1+ */
+    background: -ms-linear-gradient(top, #7FECE6 0%,#01DFD7 50%,#59E4DC 100%);  /* IE10+ */
+}
+/* Add a border to the preview shapes*/
+.previewBoard ._SQUARE,
+.previewBoard ._LINE,
+.previewBoard ._PYRAMID,
+.previewBoard ._L1,
+.previewBoard ._L2,
+.previewBoard ._S1,
+.previewBoard ._S2 {
+    border: 1px solid black;
+}
