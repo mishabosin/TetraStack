@@ -32,7 +32,7 @@ var game = (function() {
         logger.log('Game initialized');
 
         document.getElementById("game").innerHTML = "Initializing...";
-        document.getElementById("newGameButton").value = "Start";
+        document.getElementById("new-game-button").innerHTML = "Start";
 
         // Draw the game
         drawGame();
@@ -52,12 +52,12 @@ var game = (function() {
             // 3) don't use a table - design a button layout.
             // 4) Detect swipe motions?
             if (navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPod/i)) {
-                document.getElementById("controls").innerHTML = "<br><form action=''><table width='100%'><tr>\
+                document.getElementById("controls").innerHTML = "<table width='100%'><tr>\
                         <td><input id='left' type='button' onClick='game.userLeft();'></td>\
                         <td><input id='up' type='button' onClick='game.userUp();'></td>\
                         <td><input id='down' type='button' onClick='game.userDown();'></td>\
                         <td><input id='right' type='button' onClick='game.userRight();'></td>\
-                        </tr></table></form>";
+                        </tr></table>";
             }
         }
     }
@@ -97,7 +97,7 @@ var game = (function() {
         } else {
             startGame();
         }
-        document.getElementById("newGameButton").blur();
+        document.getElementById("new-game-button").blur();
     }
 
     /**
@@ -111,7 +111,7 @@ var game = (function() {
         drawPreview();
         isGameStarted = true;
         togglePause();
-        document.getElementById("newGameButton").value = "New Game";
+        document.getElementById("new-game-button").innerHTML = "New Game";
     }
 
     /**
@@ -146,7 +146,7 @@ var game = (function() {
      */
     function drawGame() {
         var x, y;
-        var gameTable = '<table class="gameBoard">';
+        var gameTable = '<table class="game-board">';
 
         // The higher rows get added to the table first
         for (y = board.BOARD_HEIGHT - 1; y > -1; y--) {
@@ -410,7 +410,7 @@ var game = (function() {
         }
 
         // Construct the html for the display table
-        previewTable = '<br>Preview<br><table class="previewBoard">';
+        previewTable = '<div class="preview-header">Preview</div><table class="preview-board">';
         // The higher rows get added to the table first
         for (y = previewBoard.BOARD_HEIGHT - 1; y > -1; --y) {
             // Generate each row
@@ -434,7 +434,7 @@ var game = (function() {
      */
     function drawPausedGame() {
         var x, y;
-        var gameTable = '<table class="gameBoard">';
+        var gameTable = '<table class="game-board">';
         var boardMiddle = board.BOARD_HEIGHT / 2;
         // The higher rows get added to the table first
         for (y = board.BOARD_HEIGHT - 1; y > -1; --y) {

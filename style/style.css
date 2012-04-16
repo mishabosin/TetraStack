@@ -1,30 +1,33 @@
 /** Stylesheet to support TetraStack */
+body {
+    font-family: Copperplate, sans-serif;
+    color: #3E3E3E;
+}
+/* Overwrite bootstrap default */
+input, button, select, textarea {
+    font-family: Copperplate, "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
 
-/*TODO: reset*/
 
-A:visited { color: blue; }
+/* General page structure: 3 boxes in a container */
 #container {
-    width: 593px;
+    width: 631px;
     margin: 0 auto;
     display: block;
 }
-.title {
-    margin: 10px;
-    font-weight: 900;
-    font-size: 20px;
-    color: blue;
-    text-align: center;
-}
-.gameText {
-    font-weight: 900;
-    color: blue;
-    text-align: center;
+#game,
+#progress,
+#preview {
+    border: 5px solid #000099;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
 }
 #progress,
 #preview {
     width: 150px;
     height: 150px;
-    border: 4px double black;
+    background: #F9F9F9;
 }
 #progress {
     margin-right: 20px;
@@ -37,6 +40,37 @@ A:visited { color: blue; }
 #game {
     float: left;
 }
+
+
+.title {
+    margin: 10px;
+    font-size: 25px;
+    text-align: center;
+}
+.game-text {
+    color: #000099;
+    font-weight: 900;
+    text-align: center;
+    font-size: 16px;
+}
+#game.game-text {
+    font-weight: 500;
+    line-height: 16px;
+}
+#level,
+#score{
+    margin: 10px;
+}
+#new-game-button {
+    display: block;
+    height: 40px;
+    width: 120px;
+    margin: 26px auto;
+}
+.preview-header {
+    margin-top: 10px;
+}
+
 #controls {
     clear: both;
     padding-top: 25px;
@@ -44,12 +78,12 @@ A:visited { color: blue; }
 #controls .info {
     text-align: center;
     padding-bottom: 5px;
-    font-family: arial, sans-serif;
     font-size: 14px;
 }
 #left, #right, #up, #down {
     width: 70px;
 }
+
 .copyright {
     clear: both;
     padding-top: 10px;
@@ -57,24 +91,27 @@ A:visited { color: blue; }
     font-size: 10px;
     font-weight: 700;
 }
-table.gameBoard {
-    text-align: center;
+
+
+/* Board Tables */
+table.game-board,
+table.preview-board {
     border-collapse: collapse;
-    border: 4px double black;
 }
-table.gameBoard td {
-    border: 1px solid black;
-}
-table.previewBoard {
+table.preview-board {
     margin: 0 auto;
+}
+table.game-board td {
+    border: 1px solid black;
     text-align: center;
-    border-collapse: collapse;
 }
-table.gameBoard td,
-table.previewBoard td {
-    height: 20px;
-    width: 20px;
+table.game-board td,
+table.preview-board td {
+    height: 23px;
+    width: 23px;
 }
+
+/* Table Blocks */
 td.SKY {
     background: #E6E6E6;
 }
@@ -129,12 +166,12 @@ td.S2, td._S2 {
     background: -ms-linear-gradient(top, #7FECE6 0%,#01DFD7 50%,#59E4DC 100%);  /* IE10+ */
 }
 /* Add a border to the preview shapes*/
-.previewBoard ._SQUARE,
-.previewBoard ._LINE,
-.previewBoard ._PYRAMID,
-.previewBoard ._L1,
-.previewBoard ._L2,
-.previewBoard ._S1,
-.previewBoard ._S2 {
+.preview-board ._SQUARE,
+.preview-board ._LINE,
+.preview-board ._PYRAMID,
+.preview-board ._L1,
+.preview-board ._L2,
+.preview-board ._S1,
+.preview-board ._S2 {
     border: 1px solid black;
 }

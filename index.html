@@ -2,36 +2,34 @@
 <html>
 <head>
     <title>TetraStack</title>
+    <script src="3party/bootstrap/js/bootstrap.js"></script>
     <script src="js/logger.js"></script>
     <script src="js/board.js"></script>
     <script src="js/shape.js"></script>
     <script src="js/shapes.js"></script>
     <script src="js/game.js"></script>
+    <link rel="stylesheet" type="text/css" href="3party/bootstrap/css/bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="style/style.css" />
 </head>
 <body onload="game.init();">
 <div id="container">
-    <div class="title">TetraStack</div>
+    <div class="title game-text">TetraStack</div>
 
-    <div id="progress" class="gameText">
-        <br>
-        <div id="level">Level: 1</div><br>
-        <div id="score">Score: 0</div><br>
-        <div align="center"><br>
-            <form action="">
-                <input id="newGameButton" type="button" style="width: 80px;" value="Start" onclick="game.newGame();">
-            </form>
-        </div>
+    <div id="progress">
+        <div id="level" class="game-text">Level: 1</div>
+        <div id="score" class="game-text">Score: 0</div>
+        <button id="new-game-button" class="btn btn-large btn-primary" onclick="game.newGame();">Start</button>
     </div>
 
-    <div id="game"></div>
+    <div id="game" class="game-text"></div>
 
-    <div id="preview" class="gameText"></div>
+    <div id="preview" class="game-text"></div>
 
     <div id="controls">
         <div class="info">Use the arrow keys on your keyboard to control the blocks.</div>
         <div class="info">Spacebar to pause.</div>
-    <!--<div id="scores" class="text"><a href="http://www.bosin.net/misha_/TetraStack/HighScores.html">High Scores</a></div>-->
+        <!--<div id="scores" class="text"><a href="http://www.bosin.net/misha_/TetraStack/HighScores.html">High Scores</a></div>-->
+    </div>
     <div class="copyright">Created by: Mikhail Bosin</div>
 </div>
 </body>
