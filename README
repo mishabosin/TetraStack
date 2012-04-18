@@ -2,7 +2,5 @@ TetraStack is the well-know Tetris game that doesn't carry that trademark.  I bu
 
 To play just open the index.html file and click start.  User the arrow keys to manipulate the falling blocks and the space bar to pause.
 
-The game currently uses no plugins - it uses plain javascript and css.
-
 What's next:
-As soon as I have time, I will add some neater effects with css3, and most importantly a better server for safekeeping the high scores.
+Need to keep scores. As soon as I have time I will try out Redis with both Ruby and Node.js.
