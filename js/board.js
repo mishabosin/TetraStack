@@ -10,13 +10,10 @@ function Board(height, width) {
     boardScope.BOARD_HEIGHT = height;
     boardScope.space = new Array(boardScope.BOARD_WIDTH);
 
-    // Init the board right away.
-    init();
-
     /**
      * Fill the board space with sky: init every square
      */
-    function init() {
+    boardScope.init = function() {
         var x, y;
         for (x = 0; x < boardScope.BOARD_WIDTH; x++) {
             boardScope.space[x] = new Array(boardScope.BOARD_HEIGHT);
@@ -24,5 +21,8 @@ function Board(height, width) {
                 boardScope.space[x][y] = boardScope.SKY;
             }
         }
-    }
+    };
+
+    // Init the board right away.
+    boardScope.init();
 }

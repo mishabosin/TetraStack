@@ -82,7 +82,6 @@ Shape.prototype.isLoweringNeeded = function() {
         // or if any block is not too high above the board
         // and the block below it is not a part of this shape
         // and the block below it is not sky
-        // TODO: refactor into a readable boolean
         if ((0 === this.blocks[i].y)
                 || ((this.blocks[i].y < this.board.BOARD_HEIGHT)
                 && (this.FALLING_PREFIX !== this.board.space[this.blocks[i].x][this.blocks[i].y - 1].charAt(0))
@@ -115,7 +114,6 @@ Shape.prototype.moveRight = function() {
         // or if any block is not too high above the board
         // and the block to the right is not part of this shape
         // and the block to the right is not sky
-        //TODO: refactor me to ue a boolean var
         if ((this.board.BOARD_WIDTH - 1 === this.blocks[i].x)
             || ((this.blocks[i].y < this.board.BOARD_HEIGHT)
             && (this.FALLING_PREFIX !== this.board.space[this.blocks[i].x + 1][this.blocks[i].y].charAt(0))
@@ -141,7 +139,6 @@ Shape.prototype.moveLeft = function () {
         // or if any block is not too high above the board
         // and the block to the left is not part of this shape
         // and the block to the left is not sky
-        //TODO: refactor me into a human readable boolean var
         if ((0 === this.blocks[i].x)
             || ((this.blocks[i].y < this.board.BOARD_HEIGHT)
             && (this.FALLING_PREFIX !== this.board.space[this.blocks[i].x - 1][this.blocks[i].y].charAt(0))
@@ -164,7 +161,6 @@ Shape.prototype.moveLeft = function () {
 Shape.prototype.isLegalShape = function() {
     var i;
     for (i = 0; i < this.BLOCKS_PER_SHAPE; ++i) {
-        //TODO: refactor into a boolean var
         if (this.blocks[i].x < 0 || this.blocks[i].x > this.board.BOARD_WIDTH - 1
             || (this.blocks[i].y < this.board.BOARD_HEIGHT
             && this.board.SKY !== this.board.space[this.blocks[i].x][this.blocks[i].y])) {

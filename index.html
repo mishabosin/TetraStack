@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>TetraStack</title>
+    <script src="3party/jquery-1.7.2.min.js"></script>
     <script src="3party/bootstrap/js/bootstrap.js"></script>
     <script src="js/logger.js"></script>
     <script src="js/board.js"></script>
@@ -11,14 +12,14 @@
     <link rel="stylesheet" type="text/css" href="3party/bootstrap/css/bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="style/style.css" />
 </head>
-<body onload="game.init();">
+<body>
 <div id="container">
     <div class="title game-text">TetraStack</div>
 
     <div id="progress">
-        <div id="level" class="game-text">Level: 1</div>
-        <div id="score" class="game-text">Score: 0</div>
-        <button id="new-game-button" class="btn btn-large btn-primary" onclick="game.newGame();">Start</button>
+        <div class="game-text">Level: <span id="level">1</span></div>
+        <div class="game-text">Score: <span id="score">0</span></div>
+        <button id="newGameButton" class="btn btn-large btn-primary">Start</button>
     </div>
 
     <div id="game" class="game-text"></div>
@@ -31,6 +32,50 @@
         <!--<div id="scores" class="text"><a href="http://www.bosin.net/misha_/TetraStack/HighScores.html">High Scores</a></div>-->
     </div>
     <div class="copyright">Created by: Mikhail Bosin</div>
+
+    <!--Level Up Modal-->
+    <div class="modal hide fade in" id="levelUpModal">
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">&times;</a>
+            <h3>Level Up</h3>
+        </div>
+        <div class="modal-body game-text">
+            New Level: <span id="newLevel">0</span>!
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn btn-primary default" data-dismiss="modal">OK</a>
+        </div>
+    </div>
+
+    <!--Game Over Modal-->
+    <div class="modal hide fade in" id="gameOverModal">
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">&times;</a>
+            <h3>Game Over</h3>
+        </div>
+        <div class="modal-body game-text">
+            Final score: <span id="finalScore">0</span>!
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn btn-primary default" data-dismiss="modal">OK</a>
+        </div>
+    </div>
+
+    <!--New Game Modal-->
+    <div class="modal hide fade in" id="newGameModal">
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">&times;</a>
+            <h3>New Game</h3>
+        </div>
+        <div class="modal-body game-text">
+            Abandon this game and start over?
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn btn-success default" data-dismiss="modal">No!</a>
+            <a id="newGameConfirm" href="#" class="btn btn-danger" data-dismiss="modal">Restart</a>
+        </div>
+    </div>
+
 </div>
 </body>
 </html>

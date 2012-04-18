@@ -17,48 +17,51 @@
 var game = (function() {
     var board = new Board(20, 10);
     var isGameStarted = false;
-    var paused = true;
+    var isStopped = false;
+    var isPaused = true;
     var pauseDetected = true;
-    var level = 1;
-    var totalShapesDropped = 0;
-    var score = 0;
+    var level,
+        totalShapesDropped,
+        score,
+        delay;
     // Initialize the shapes
     var FallingShape = null;
     var previewShape = dropNewShape();
-    // Set initial delay to 1/2 a second.
-    var delay = 500;
 
     function init() {
         logger.log('Game initialized');
 
-        document.getElementById("game").innerHTML = "Initializing...";
-        document.getElementById("new-game-button").innerHTML = "Start";
-
-        // Draw the game
         drawGame();
         drawPreview();
         addTouchScreenSupport();
+        initControls();
+        initDialogs();
 
-        // Add the key listner:
-        document.onkeydown = processKeys;
+        function initControls() {
+            // Add the key listner:
+            document.onkeydown = processKeys;
+            // Bind the start button:
+            $('#newGameButton').click(newGame);
+        }
 
-        /**
-         * Check for the iPad/iPhone and add some buttons to push or listen for getures
-         */
+        function initDialogs() {
+            // Bind the restart dialog:
+            $('#newGameConfirm').click(startGame);
+            $('#newGameModal').bind('hidden', function() {
+                if (isPaused) {
+                    togglePause();
+                }
+            });
+
+            // Bind the level up dialog:
+            $('#levelUpModal').bind('hidden', function() {
+                isStopped = false;
+                advance();
+            });
+        }
+
         function addTouchScreenSupport() {
-            // TODO.
-            // 1) validate this using the simulator
-            // 2) use show/hide here instead of injecting a bunch of HTML?
-            // 3) don't use a table - design a button layout.
-            // 4) Detect swipe motions?
-            if (navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPod/i)) {
-                document.getElementById("controls").innerHTML = "<table width='100%'><tr>\
-                        <td><input id='left' type='button' onClick='game.userLeft();'></td>\
-                        <td><input id='up' type='button' onClick='game.userUp();'></td>\
-                        <td><input id='down' type='button' onClick='game.userDown();'></td>\
-                        <td><input id='right' type='button' onClick='game.userRight();'></td>\
-                        </tr></table>";
-            }
+            // TODO
         }
     }
 
@@ -71,7 +74,7 @@ var game = (function() {
     function processKeys(key) {
         var pressedKey = key.keyCode? key.keyCode : key.charCode;
         // TODO: make this work on IE
-        // alert (pressedKey);
+//        alert (pressedKey);
         if (32 === pressedKey) {
             togglePause();
         } else if (37 === pressedKey) {
@@ -82,22 +85,23 @@ var game = (function() {
             userUp();
         } else if (40 === pressedKey) {
             userDown();
+        } else if (13 === pressedKey) {
+            dismissDialog();
         }
     }
 
     function newGame() {
-        logger.log('Staring a new game');
         if (isGameStarted) {
-            togglePause();
-            if (confirm("Are you sure you want to start a new game?")) {
-                window.location.reload();
-            } else {
+            if (!isPaused) {
                 togglePause();
             }
+            $('#newGameModal').modal();
         } else {
             startGame();
         }
-        document.getElementById("new-game-button").blur();
+
+        // Some browsers become unresponsive to arrow keys if theis focus is not removed
+        $('#newGameButton').blur();
     }
 
     /**
@@ -105,13 +109,36 @@ var game = (function() {
      * game.
      */
     function startGame() {
+        logger.log('Staring a new game');
+        // Hide any dialog that might have started this game
+        $('.modal').hide();
+
+        // Reset the board
+        board.init();
+
+        // Init the scores
+        level = 1;
+        score = 0;
+        totalShapesDropped = 1;
+        delay = 500; // 1/2 sec
+        updateUserProgress();
+
+        // Init the shapes
         FallingShape = previewShape;
-        totalShapesDropped++;
         previewShape = dropNewShape();
+
+        // Reset game state
         drawPreview();
+        pauseDetected = false;
+        isPaused = false;
         isGameStarted = true;
-        togglePause();
-        document.getElementById("new-game-button").innerHTML = "New Game";
+        isStopped = false;
+
+        // Update the button if this is the first game
+        $('#newGameButton').text("New Game");
+
+        // Start dropping blocks
+        advance();
     }
 
     /**
@@ -158,6 +185,7 @@ var game = (function() {
             gameTable += '</tr>';
         }
         gameTable += '</table>';
+        // Leave in plain js rather than jquery for efficiency
         document.getElementById("game").innerHTML = gameTable;
     }
 
@@ -166,7 +194,7 @@ var game = (function() {
      * it is allowed.
      */
     function userLeft() {
-        if (!paused) {
+        if (!isStopped) {
             FallingShape.moveLeft();
             drawGame();
         }
@@ -177,7 +205,7 @@ var game = (function() {
      * it is allowed.
      */
     function userRight() {
-        if (!paused) {
+        if (!isStopped) {
             FallingShape.moveRight();
             drawGame();
         }
@@ -189,9 +217,9 @@ var game = (function() {
      */
     function userUp() {
         var rotatedShape;
-        if (!paused) {
+        if (!isStopped) {
             rotatedShape = FallingShape.rotate();
-            //isLegalShape depends on the FallingShape to be hidden in order to be accurate
+            // isLegalShape depends on the FallingShape to be hidden in order to be accurate
             FallingShape.hideShape();
             if (rotatedShape.isLegalShape()) {
                 FallingShape = rotatedShape;
@@ -205,7 +233,7 @@ var game = (function() {
      * The user wants to drop the block to the very bottom.  Drop if allowed.
      */
     function userDown() {
-        if (!paused) {
+        if (!isStopped) {
             while (FallingShape.isLoweringNeeded()) {
                 FallingShape.lower();
                 drawGame();
@@ -225,13 +253,14 @@ var game = (function() {
         // need this variable in case the pause is toggled multiple times
         // between calls to advance.
         pauseDetected = false;
-        if (!paused) {
+        if (!isStopped) {
             if (FallingShape.isLoweringNeeded()) {
                 FallingShape.lower();
                 drawGame();
             } else {
                 // block can't keep falling
                 if (isGameOver()) {
+                    isStopped = true;
                     recordPlayerScore();
                     return;
                 } else {
@@ -239,8 +268,10 @@ var game = (function() {
                     FallingShape.shapeName = FallingShape.shapeName.substring(1);
                     FallingShape.showShape();
                     score += FallingShape.points * (level + 1);
-                    manageRows(); // remove any full rows and fill the gap
-                    updateUserProgress(); // update score, level, and delay
+                    // remove any full rows and fill the gap:
+                    manageRows();
+                    // update score, level, and delay:
+                    updateUserProgress();
                     FallingShape = previewShape;
                     totalShapesDropped++;
                     previewShape = dropNewShape();
@@ -267,8 +298,9 @@ var game = (function() {
      * UpdateScore.php.
      */
     function recordPlayerScore() {
-        //TODO: capture and store the score
-        var playerName = prompt("GAME OVER\nFinal Score: " + score + "\nPlease enter your name:\n");
+        $('#finalScore').text(score);
+        $('#gameOverModal').modal();
+//        var playerName = prompt("GAME OVER\nFinal Score: " + score + "\nPlease enter your name:\n");
 //        if (playerName && ("" !== playerName)) {
 //            window.location="UpdateScores.php?needToAdd=1&score="+score+"&name="+playerName;
 //        }
@@ -370,24 +402,30 @@ var game = (function() {
      * areas of the game.
      */
     function updateUserProgress() {
-        // Every 50 droppedShapes is around 20 cleared rows, level up first at
+        // Every 50 droppedShapes is around 20 cleared rows, level up first around
         // 35, but slightly increaase the number of shapes dropped every level.
         var baseNumOfShapes = 30;
-        var shapesPerLevel = 5;
-        var fraction = 8;
+        var shapesPerLevel = 3;
+        var delayIncrementFraction = 8;
         var updateLevel = Math.ceil(totalShapesDropped / (baseNumOfShapes + shapesPerLevel * level));
         if (level < updateLevel) {
-            level++;
-            //
-            // Level 1 = .5sec, Level 2 = .437sec, Level 3 = .382sec, ... Level 5 = .293sec ... Level 10 = .15sec
-            delay = delay - delay / fraction;
-            logger.log("Level:" + level + " Total shapes: " + totalShapesDropped + " Delay: " + delay + " sec.");
-            // TODO: Pause the game and add some jquery fade-in for a custom alert?
-            alert("Level " + level +"!");
+            // Level up!
+            level += 1;
+            // Level 1 = .5sec, Level 2 = .437sec, Level 3 = .382sec, ...
+            // Level 5 = .293sec ... Level 10 = .15sec
+            delay = delay - delay / delayIncrementFraction;
+            logger.log("Level:" + level + " Total shapes:" + totalShapesDropped + " Delay:" + delay + " sec.");
+            levelAlert(level);
         }
         // Update the scoreboard
-        document.getElementById("score").innerHTML = "Score: " + score;
-        document.getElementById("level").innerHTML = "Level: " + level;
+        document.getElementById("score").innerHTML = score;
+        document.getElementById("level").innerHTML = level;
+    }
+
+    function levelAlert(level) {
+        isStopped = true;
+        $('#newLevel').text(level);
+        $('#levelUpModal').modal();
     }
 
     /**
@@ -436,6 +474,7 @@ var game = (function() {
         var x, y;
         var gameTable = '<table class="game-board">';
         var boardMiddle = board.BOARD_HEIGHT / 2;
+
         // The higher rows get added to the table first
         for (y = board.BOARD_HEIGHT - 1; y > -1; --y) {
             // Generate each row
@@ -475,32 +514,42 @@ var game = (function() {
      * the player
      */
     function togglePause() {
+        // Allow the user to start the game with a spacebar rather than a button
         if (!isGameStarted) {
-            // Start the game properly if it isn't already started
             startGame();
-            // Need this seemingly redundant line to make isGameStarted work correctly
-            isGameStarted = true;
             return;
         }
-        if (paused) {
-            paused = false;
+
+        // Deal with the pause
+        if (isPaused) {
+            isPaused = false;
+            isStopped = false;
             // Don't kick off another advance loop if the old one never noticed the pause.
             if (pauseDetected) {
                 advance();
             }
         } else {
-            paused = true;
+            isPaused = true;
+            isStopped = true;
             drawPausedGame();
         }
     }
 
+    function dismissDialog() {
+        $('.modal .btn.default:visible').click();
+    }
     return {
         init: init,
         newGame: newGame,
-        // Expose the game controls that can be bound to buttons on the screen.
+        // Expose the game controls as an API
         userLeft: userLeft,
         userRight: userRight,
         userUp: userUp,
-        userDown: userDown
+        userDown: userDown,
+        pause: togglePause
     };
 })();
+
+$(document).ready(function() {
+    game.init();
+});
