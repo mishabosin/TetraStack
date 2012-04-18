@@ -100,7 +100,7 @@ var game = (function() {
             startGame();
         }
 
-        // Some browsers become unresponsive to arrow keys if theis focus is not removed
+        // Some browsers become unresponsive to arrow keys if this focus is not removed
         $('#newGameButton').blur();
     }
 
@@ -494,10 +494,10 @@ var game = (function() {
                     } else if (7 === x) {
                         gameTable += '<td class="' + board.SKY + '">D</td>';
                     } else {
-                        gameTable += '<td class="' + board.SKY + '">&nbsp;</td>';
+                        gameTable += '<td class="' + board.SKY + '"></td>';
                     }
                 } else {
-                    gameTable += '<td class="' + board.SKY + '">&nbsp;</td>';
+                    gameTable += '<td class="' + board.SKY + '"></td>';
                 }
             }
             gameTable += '</tr>';
@@ -538,10 +538,11 @@ var game = (function() {
     function dismissDialog() {
         $('.modal .btn.default:visible').click();
     }
+
     return {
         init: init,
+        // Expose the game controls:
         newGame: newGame,
-        // Expose the game controls as an API
         userLeft: userLeft,
         userRight: userRight,
         userUp: userUp,
