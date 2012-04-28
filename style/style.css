@@ -181,3 +181,12 @@ td.S2, td._S2 {
     margin: 0 0 0 -152px;
     top: 226px;
 }
+
+.scrollContainer {
+    height: 370px;
+    overflow: auto;
+}
+.rankCol,
+.scoreCol {
+    width: 69px;
+}

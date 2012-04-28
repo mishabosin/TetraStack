@@ -1,19 +1,22 @@
 <!DOCTYPE HTML>
-<html>
+<html xmlns="http://www.w3.org/1999/html">
 <head>
     <title>TetraStack</title>
     <script src="3party/jquery-1.7.2.min.js"></script>
     <script src="3party/bootstrap/js/bootstrap.js"></script>
+    <script src="3party/angular/angular-1.0.0rc6.js"></script>
+    <script src="3party/angular/angular-resource-1.0.0rc6.js"></script>
     <script src="js/logger.js"></script>
     <script src="js/board.js"></script>
     <script src="js/shape.js"></script>
     <script src="js/shapes.js"></script>
     <script src="js/game.js"></script>
+    <script src="js/ScoreService.js"></script>
     <link rel="stylesheet" type="text/css" href="3party/bootstrap/css/bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="style/style.css" />
 </head>
-<body>
-<div id="container">
+<body ng-app='mobgolab'>
+<div id="container" ng-controller="game.ScoreCtrl" >
     <div class="title game-text">TetraStack</div>
 
     <div id="progress">
@@ -54,10 +57,17 @@
             <h3>Game Over</h3>
         </div>
         <div class="modal-body game-text">
-            Final score: <span id="finalScore">0</span>!
+            <p>Final score: {{score}}<span id="finalScore">0</span>.</p>
+            <form name="newScoreForm">
+                <div class="control-group" ng-class="{error: newScoreForm.name.$invalid}">
+                    <label>Add it to the record book!</label>
+                    <input ng-model="name" name="name" required type="text" placeholder="Enter your name...">
+                </div>
+            </form>
         </div>
         <div class="modal-footer">
-            <a href="#" class="btn btn-primary default" data-dismiss="modal">OK</a>
+            <button class="btn" data-dismiss="modal">Cancel</button>
+            <button ng-click="submitScore()" ng-disabled="newScoreForm.$invalid" class="btn btn-primary default">Submit</button>
         </div>
     </div>
 
@@ -76,6 +86,38 @@
         </div>
     </div>
 
+    <!--Scores Modal-->
+    <div class="modal hide fade in" id="scoresModal">
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">&times;</a>
+            <h3>High Scores</h3>
+        </div>
+        <div class="modal-body game-text">
+            <!--<input type="text" ng-model="search" class="search-query" placeholder="Search...">-->
+            <!--<div class="clearfix"></div>-->
+            <div class="scrollContainer">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th class="rankCol">Rank</th>
+                        <th class="scoreCol">Score</th>
+                        <th>Name</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="record in records | filter:search | orderBy:'score':true">
+                        <td>{{$index + 1}}</td>
+                        <td>{{record.score}}</td>
+                        <td>{{record.name}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn btn-primary default" data-dismiss="modal">Close</a>
+        </div>
+    </div>
 </div>
 </body>
 </html>

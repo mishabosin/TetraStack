@@ -61,7 +61,7 @@ var game = (function() {
         }
 
         function addTouchScreenSupport() {
-            // TODO
+            // TODO: touch screen support
         }
     }
 
@@ -73,7 +73,7 @@ var game = (function() {
      */
     function processKeys(key) {
         var pressedKey = key.keyCode? key.keyCode : key.charCode;
-        // TODO: make this work on IE
+        // TODO: make this work on IE?
 //        alert (pressedKey);
         if (32 === pressedKey) {
             togglePause();
@@ -111,7 +111,7 @@ var game = (function() {
     function startGame() {
         logger.log('Staring a new game');
         // Hide any dialog that might have started this game
-        $('.modal').hide();
+        $('.modal').modal('hide');
 
         // Reset the board
         board.init();
@@ -539,6 +539,37 @@ var game = (function() {
         $('.modal .btn.default:visible').click();
     }
 
+    function ScoreCtrl($scope, $log, ScoreService) {
+
+        $scope.submitScore = function() {
+            // Send the score to the db
+
+            var scoreService = new ScoreService({name: $scope.name, score: score});
+            scoreService.$save([], onSaveSuccess, onSaveFail);
+
+            function onSaveSuccess() {
+                $log.log("Added score " + score + " for: " + $scope.name);
+
+                // show high scores
+                $scope.records = ScoreService.query([], onLoadSuccess, onLoadFail);
+                function onLoadSuccess() {
+                    $('#gameOverModal').modal('hide');
+                    $('#scoresModal').modal('show');
+                }
+                function onLoadFail() {
+                    $log.error("Failed to load the scores");
+                    $('#gameOverModal').modal('hide');
+                }
+            }
+
+            function onSaveFail() {
+                $log.error("Failed to record the score");
+                $('#gameOverModal').modal('hide');
+            }
+        }
+
+    }
+
     return {
         init: init,
         // Expose the game controls:
@@ -547,7 +578,8 @@ var game = (function() {
         userRight: userRight,
         userUp: userUp,
         userDown: userDown,
-        pause: togglePause
+        pause: togglePause,
+        ScoreCtrl: ScoreCtrl
     };
 })();
 
