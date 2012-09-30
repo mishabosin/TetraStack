@@ -4,7 +4,9 @@
  */
 var logger = (function() {
 
-    var isConsoleSupported = typeof console !== "undefined";
+    var isConsoleSupported = typeof console !== "undefined"
+      && typeof console.log !== "undefined"
+      && typeof console.error !== "undefined";
 
     function log(msg) {
         if (isConsoleSupported) {

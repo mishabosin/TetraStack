@@ -13,6 +13,8 @@
  * SCORE: placing each block is worth a number of points based on the shape.
  * Clearing a row is worth extra points, and clearing multiple rows adds a
  * bonus.
+ *
+ * @author misha [mishabosin@gmail.com]
  */
 var game = (function() {
     var board = new Board(20, 10);
