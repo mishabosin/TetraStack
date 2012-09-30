@@ -1,0 +1,123 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>TetraStack</title>
+    <script src="3party/jquery-1.7.2.min.js"></script>
+    <script src="3party/bootstrap/js/bootstrap.js"></script>
+    <script src="3party/angular/angular-1.0.0rc6.js"></script>
+    <script src="3party/angular/angular-resource-1.0.0rc6.js"></script>
+    <script src="js/logger.js"></script>
+    <script src="js/board.js"></script>
+    <script src="js/shape.js"></script>
+    <script src="js/shapes.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/ScoreService.js"></script>
+    <link rel="stylesheet" type="text/css" href="3party/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="style/style.css" />
+</head>
+<body ng-app='mobgolab'>
+<div id="container" ng-controller="game.ScoreCtrl" >
+    <div class="title game-text">TetraStack</div>
+
+    <div id="progress">
+        <div class="game-text">Level: <span id="level">1</span></div>
+        <div class="game-text">Score: <span id="score">0</span></div>
+        <button id="newGameButton" class="btn btn-large btn-primary">Start</button>
+    </div>
+
+    <div id="game" class="game-text"></div>
+
+    <div id="preview" class="game-text"></div>
+
+    <div id="controls">
+        <div class="info">Use the arrow keys on your keyboard to control the blocks.</div>
+        <div class="info">Spacebar to pause.</div>
+        <!--<div id="scores" class="text"><a href="http://www.bosin.net/misha_/TetraStack/HighScores.html">High Scores</a></div>-->
+    </div>
+    <div class="copyright">Created by: Mikhail Bosin</div>
+
+    <!--Level Up Modal-->
+    <div class="modal hide fade in" id="levelUpModal">
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">&times;</a>
+            <h3>Level Up</h3>
+        </div>
+        <div class="modal-body game-text">
+            New Level: <span id="newLevel">0</span>!
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn btn-primary default" data-dismiss="modal">OK</a>
+        </div>
+    </div>
+
+    <!--Game Over Modal-->
+    <div class="modal hide fade in" id="gameOverModal">
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">&times;</a>
+            <h3>Game Over</h3>
+        </div>
+        <div class="modal-body game-text">
+            <p>Final score: {{score}}<span id="finalScore">0</span>.</p>
+            <form name="newScoreForm">
+                <div class="control-group" ng-class="{error: newScoreForm.name.$invalid}">
+                    <label>Add it to the record book!</label>
+                    <input ng-model="name" name="name" required type="text" placeholder="Enter your name...">
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal">Cancel</button>
+            <button ng-click="submitScore()" ng-disabled="newScoreForm.$invalid" class="btn btn-primary default">Submit</button>
+        </div>
+    </div>
+
+    <!--New Game Modal-->
+    <div class="modal hide fade in" id="newGameModal">
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">&times;</a>
+            <h3>New Game</h3>
+        </div>
+        <div class="modal-body game-text">
+            Abandon this game and start over?
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn btn-success default" data-dismiss="modal">No!</a>
+            <a id="newGameConfirm" href="#" class="btn btn-danger" data-dismiss="modal">Restart</a>
+        </div>
+    </div>
+
+    <!--Scores Modal-->
+    <div class="modal hide fade in" id="scoresModal">
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">&times;</a>
+            <h3>High Scores</h3>
+        </div>
+        <div class="modal-body game-text">
+            <!--<input type="text" ng-model="search" class="search-query" placeholder="Search...">-->
+            <!--<div class="clearfix"></div>-->
+            <div class="scrollContainer">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th class="rankCol">Rank</th>
+                        <th class="scoreCol">Score</th>
+                        <th>Name</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="record in records | filter:search | orderBy:'score':true">
+                        <td>{{$index + 1}}</td>
+                        <td>{{record.score}}</td>
+                        <td>{{record.name}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn btn-primary default" data-dismiss="modal">Close</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
