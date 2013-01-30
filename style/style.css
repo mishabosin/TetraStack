@@ -83,10 +83,11 @@ input, button, select, textarea {
 }
 
 .copyright {
+    display: block;
     clear: both;
     padding-top: 10px;
     text-align: center;
-    font-size: 10px;
+    font-size: 14px;
     font-weight: 700;
 }
 
